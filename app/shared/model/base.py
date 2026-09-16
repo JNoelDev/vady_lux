@@ -15,7 +15,6 @@ class UUIDSTampz:
 
     created_at: Mapped[datetime]= mapped_column(
         DateTime(timezone=True),
-        default=func.now(),
         server_default=func.now(),
         nullable=False
     )
