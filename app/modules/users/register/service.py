@@ -1,5 +1,6 @@
 from app.modules.users.register.repository import UserRepository
 from app.modules.users.register.schema import UserRegister,UserRead
+from app.core.email import send_message
 from fastapi import HTTPException,status
 from app.core.security import hash_password
 import secrets
@@ -39,17 +40,36 @@ class UserService:
             }
         return await self.repo.create(user_data)
         
+    async def send_a_mail(code:str,email:str) -> bool:
+        html=f"Please enter this code {code}"
+        subject="Code vérification"
+        return await send_message(email,subject,html)
 
 
 
     async def register(self,payload:UserRegister):
-        verify_email = await self.repo.get_by_email(payload.email)
+        verify_email = await self.repo.get_by_email(str(payload.email))
         if verify_email:
             raise HTTPException(
                 status_code=status.HTTP_409_CONFLICT,detail="Email has already registered"
             )
+        
+        user =await self.create_user(payload)
+        code= await self.generate_code()
+        try:
+            send=await self.send_a_mail(code,user.email)
+        except Exception:
+            send=False
+            return user
+        if send:
+            return await self.repo.update(
+                user,{"code_user":code}
+            )
+            
+        
+        
+        
 
-        code = await self.generate_code()
 
 
         
