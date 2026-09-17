@@ -1,4 +1,4 @@
-from pydantic import BaseModel,EmailStr
+from pydantic import BaseModel,EmailStr,Field
 from datetime import datetime
 from enum import Enum
 
@@ -11,8 +11,8 @@ class Nation(str,Enum):
     other="Other"
 
 class UserRegister(BaseModel):
-    first_name:str
-    last_name:str
+    first_name:str=Field(min_length=4,max_length=20)
+    last_name:str=Field(min_length=4,max_length=20)
     email:EmailStr
     password:str
     sexe:Sexe
@@ -26,7 +26,7 @@ class UserRead(BaseModel):
     email:EmailStr
     is_verified:bool
     sexe:Sexe
-    nation:str
+    nation:Nation
     phone:str|None
     created_at:datetime|None
     updated_at:datetime|None

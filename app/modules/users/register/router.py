@@ -18,6 +18,6 @@ def _get_service(db:AsyncSession=Depends(get_db)) -> UserService:
     summary="Regiser for user",
     response_model=UserRead
 )
-async def register(payload:UserRegister,service:UserService=Depends(get_db)):
+async def register(payload:UserRegister,service:UserService=Depends(_get_service)):
     user= await service.register(payload)
     return UserRead.model_validate(user)
