@@ -1,35 +1,35 @@
 services:
-    api:
-        build: .
-        env_file:
-            - .env
-        volumes:
-            - .:/app
-        ports:
-            - "8000:8000"
-        depends_on:
-            db:
-                condition: service_healthy
-        environment:
-            PYTHONPATH: /app
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    environment:
+      PYTHONPATH: /app
+    depends_on:
+      db:
+        condition: service_healthy
 
 
-    db:
-        image: postgres:17.6
-        environment:
-          POSTGRES_DB: ${POSTGRES_DB:-mydb}
-          POSTGRES_USER : ${POSTGRES_USER:-postgres}
-          POSTGRES_PASSWORD : ${POSTGRES_PASSWORD:-postgres}
+  db:
+    image: postgres:17.6
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-mydb}
+      POSTGRES_USER : ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD : ${POSTGRES_PASSWORD:-postgres}
 
-        ports:
-          - "5432:5432"
-        volumes:
-          - postgres_data:/var/lib/postgresql/data
-        healthcheck:
-          test: ["CMD-SHELL", "pg_isready -U postgres.jnkwkqvbfsqzlbsmtlts -d postgres"]
-          interval: 5s
-          retries: 5
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres.sruohnugwfgwvdqlshlh -d postgres"]
+      interval: 5s
+      retries: 5
 
    
 volumes:
-  postgres_data: 
+  postgres_data:
