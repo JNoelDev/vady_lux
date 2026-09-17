@@ -5,3 +5,4 @@ venv/
 .env.
 my_api.egg-info/
 __pycache__/
+*.ini

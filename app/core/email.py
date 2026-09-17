@@ -19,7 +19,7 @@ if mail_enabled:
         MAIL_FROM_NAME=settings.mail_from_name,
         MAIL_STARTTLS=settings.mail_starttls,
         MAIL_SSL_TLS=settings.mail_ssl_tls,
-        MAIL_CREDENTIALS=settings.mail_credentials,
+        USE_CREDENTIALS=settings.use_credentials,
         VALIDATE_CERTS=settings.validate_certs,
         DOMAIN=settings.domain
     )

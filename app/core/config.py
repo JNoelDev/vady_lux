@@ -19,7 +19,7 @@ class Settings(BaseSettings):
     mail_from_name:str=Field(...,alias="MAIL_FROM_NAME")
     mail_starttls:bool=Field(...,alias="MAIL_STARTTLS")
     mail_ssl_tls:bool=Field(...,alias="MAIL_SSL_TLS")
-    mail_credentials:bool=Field(...,alias="MAIL_CREDENTIALS")
+    use_credentials:bool=Field(...,alias="USE_CREDENTIALS")
     validate_certs:bool=Field(...,alias="VALIDATE_CERTS")
     domain:str=Field(...,alias="DOMAIN")
     enable_mail_notification:bool=Field(...,alias="ENABLE_MAIL_NOTIFICATION")
