@@ -20,7 +20,7 @@ class User(Base,UUIDSTampz):
 
     sexe:Mapped[Sexe]=mapped_column(String(20),nullable=False)
 
-    code_use:Mapped[str|None]=mapped_column(String(10),nullable=True,unique=True,index=True)
+    code_user:Mapped[str|None]=mapped_column(String(10),nullable=True,unique=True,index=True)
 
     nation:Mapped[Nation]=mapped_column(String(50),nullable=False)
 

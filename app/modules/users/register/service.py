@@ -28,8 +28,7 @@ class UserService:
             )
 
     async def create_user(self,data:UserRegister):
-        user = await self.repo.create(
-            {
+        user_data = {
                 "first_name":data.first_name,
                 "last_name":data.last_name,
                 "email":data.email,
@@ -38,7 +37,10 @@ class UserService:
                 "nation":data.nation,
                 "phone":data.phone
             }
-        )
+        return await self.repo.create(user_data)
+        
+
+
 
     async def register(self,payload:UserRegister):
         verify_email = await self.repo.get_by_email(payload.email)
