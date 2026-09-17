@@ -1,7 +1,7 @@
 from app.modules.users.register.repository import UserRepository
 from app.modules.users.register.schema import UserRegister,UserRead
 from app.modules.users.register.model import User
-from app.core.email import send_message
+from app.core.email import send_email
 from fastapi import HTTPException,status
 from app.core.security import hash_password
 import secrets
@@ -28,6 +28,7 @@ class UserService:
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Impossible to generate code"
             )
+        return code_user
 
     async def create_user(self,data:UserRegister) -> User:
         user_data = {
@@ -41,11 +42,10 @@ class UserService:
         }
         return await self.repo.create(user_data)
         
-    async def send_a_mail(code:str,email:str) -> bool:
+    async def send_a_mail(self,code:str,email:str) -> bool:
         html=f"Please enter this code {code}"
         subject="Code vérification"
-        return await send_message(email,subject,html)
-
+        return await send_email([email],subject,html)
 
 
     async def register(self,payload:UserRegister) -> UserRead|None:
@@ -57,6 +57,7 @@ class UserService:
         
         user =await self.create_user(payload)
         code= await self.generate_code()
+        print(f"{code}")
         send=await self.send_a_mail(code,user.email)
         if send:
             return await self.repo.update(

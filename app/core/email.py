@@ -1,16 +1,20 @@
 from fastapi_mail import (
-    FastMail,MessageSchema,MessageType,ConnectionConfig
+    ConnectionConfig,
+    FastMail,
+    MessageSchema,
+    MessageType,
 )
+
 from app.core.config import get_settings
 
-settings=get_settings()
+settings = get_settings()
 
-mail_enabled=(
+mail_enabled = (
     settings.enable_mail_notification
 )
 
 if mail_enabled:
-    mail_config=ConnectionConfig(
+    mail_config = ConnectionConfig(
         MAIL_USERNAME=settings.mail_username,
         MAIL_PASSWORD=settings.mail_password,
         MAIL_FROM=settings.mail_from,
@@ -21,24 +25,34 @@ if mail_enabled:
         MAIL_SSL_TLS=settings.mail_ssl_tls,
         USE_CREDENTIALS=settings.use_credentials,
         VALIDATE_CERTS=settings.validate_certs,
-        DOMAIN=settings.domain
     )
 
-    fastapi_mail=FastMail(mail_config)
+    fast_mail = FastMail(mail_config)
 
 else:
-    fastapi_mail=None
+    fast_mail = None
 
-def create_message(recipients:str,subject:str,body:str) -> MessageSchema:
+def create_message(
+    recipients: list[str],subject: str, body: str,
+) -> MessageSchema:
     return MessageSchema(
-        recipients=recipients,subject=subject,body=body,subtype=MessageType.html
+        recipients=recipients,subject=subject,body=body,subtype=MessageType.html,
     )
 
-async def send_message(recipients:str,subject:str,body:str) -> bool:
-    if fastapi_mail is None:
+async def send_email(
+    recipients: list[str],
+    subject: str,
+    body: str,
+) -> bool:
+
+    if fast_mail is None:
         return False
-    message=create_message(
-        recipients,subject,body
-        )
-    await fastapi_mail.send_message(message)
+
+    message = create_message(
+        recipients=recipients,
+        subject=subject,
+        body=body,
+    )
+
+    await fast_mail.send_message(message)
     return True

@@ -4,7 +4,7 @@ from pydantic import Field
 import os
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=os.getenv("ENV",".env"),extra="ignore")
+    model_config = SettingsConfigDict(env_file=os.getenv(".ENV",".env"),extra="ignore")
 
     environment:str=Field(...,alias="ENVIRONMENT")
     prefix_app:str=Field(...,alias="PREFIX_APP")
