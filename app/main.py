@@ -6,7 +6,7 @@ settings=get_settings()
 
 app=FastAPI(
     title="VADY-LUX APIS",
-    docs_url=f"{settings.prefix_app}/docs" if settings.environment=="development" else None,
+    docs_url=f"{settings.prefix_app}/docs",
     redoc_url=f"{settings.prefix_app}/redoc" if settings.environment=="development" else None
 )
 
