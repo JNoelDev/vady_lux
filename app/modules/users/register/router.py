@@ -21,3 +21,10 @@ def _get_service(db:AsyncSession=Depends(get_db)) -> UserService:
 async def register(payload:UserRegister,service:UserService=Depends(_get_service)):
     user= await service.register(payload)
     return UserRead.model_validate(user)
+
+@router.post(
+    "Verification code",
+    status_code=status.HTTP_202_ACCEPTED,
+)
+async def veification_code():
+    pass
